@@ -1,0 +1,29 @@
+{
+  "name": "react-free-transform",
+  "description": "A free transform tool",
+  "author": "Solaiman Kmail <psokmail@gmail.com> (https://github.com/skmail)",
+  "license": "MIT",
+  "version": "1.0.0",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skmail/react-free-transform"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "free-transform",
+    "resize",
+    "draggable"
+  ],
+  "bugs": {
+    "url": "https://github.com/skmail/react-free-transform/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  }
+}
