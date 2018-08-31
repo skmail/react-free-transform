@@ -20,18 +20,19 @@
     "url": "https://github.com/skmail/react-free-transform/issues"
   },
   "scripts": {
-    "build:lib": "babel src --out-dir lib --ignore __tests__",
+    "build:lib": "babel src --out-dir lib  --watch  --ignore __tests__ ",
     "test": "jest --verbose",
-    "test:watch": "npm run test -- --watchAll",
+    "test:watch": "npm run test --runInBand --colors --env=jsdom",
     "test:cov": "npm run test -- --coverage ",
     "test:flow": "flow check",
     "lint": "eslint src",
     "coverage": "codecov"
-
   },
   "dependencies": {
+    "prop-types": "^15.6.2",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "transformation-matrix": "^1.12.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -47,9 +48,10 @@
     "jest": "^23.4.2"
   },
   "jest": {
+    "testEnvironment": "node",
+    "testURL": "http://localhost/",
     "collectCoverageFrom": [
-      "src/**/*.js",
-      "!src/**/tests/**/*.js"
+      "src/**/*.js"
     ],
     "coverageReporters": [
       "text",
@@ -59,6 +61,6 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
-    "testRegex": "tests/.*\\.test\\.js$"
+    "testRegex": "__tests__/.*\\.test\\.js$"
   }
 }

@@ -1,9 +1,4 @@
-import React from 'react'
+import Transform from './Transform'
 
-const Transform = () => (
-  <div>
-    1234
-  </div>
-)
 
 export default Transform

@@ -1,28 +1,68 @@
-.App {
-  text-align: center;
+.App{
+  /*width: 800px;*/
+  /*height: 600px;*/
+  /*background: #000;*/
+  /*position: relative;*/
+  /*margin: auto;*/
+}
+.element{
+}
+.tr-transform__rotator{
+  background:#fff;
+  width:15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+  border: 1px solid rgba(0,0,0,0.10);
+  cursor: pointer;
+  top: -45px;
+  left:calc(50% - 7px);
+}
+.tr-transform__scale-point{
+  background:#fff;
+  width:15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+  border: 1px solid rgba(0,0,0,0.10);
+  cursor: pointer;
+
+}
+.tr-transform__scale-point--tl{
+  top: -7px;
+  left:-7px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.tr-transform__scale-point--ml{
+  top:calc(50% - 7px);
+  left: -7px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.tr-transform__scale-point--tr{
+  left:calc(100% - 7px);
+  top: -7px;
+}
+.tr-transform__scale-point--tm{
+  left:calc(50% - 7px);
+  top: -7px;
 }
 
-.App-title {
-  font-size: 1.5em;
+.tr-transform__scale-point--mr{
+  left:calc(100% - 7px);
+  top:calc(50% - 7px);
 }
 
-.App-intro {
-  font-size: large;
+.tr-transform__scale-point--bl{
+  left:-7px;
+  top:calc(100% - 7px);
 }
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.tr-transform__scale-point--bm{
+  left:calc(50% - 7px);
+  top:calc(100% - 7px);
+}
+.tr-transform__scale-point--br{
+  left:calc(100% - 7px);
+  top:calc(100% - 7px);
 }
