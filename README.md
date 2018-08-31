@@ -106,6 +106,6 @@ import FreeTransform from 'react-free-transform'
 
 ### Keyboard shortcuts
 
-`shift` for scaling on aspect ratio
-
+`shift` for aspect ratio resizing 
 `alt` for scaling from center 
+`shift` while rotation will snap rotation using 15 degrees 
