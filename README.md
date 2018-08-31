@@ -6,6 +6,9 @@
 
 ReactJs component for resizing, dragging and rotating html elements using css transform matrix 
 
+![ReactJS free transform tool](https://raw.githubusercontent.com/skmail/react-free-transform/master/image.png)
+
+
 ## Demo
 https://codesandbox.io/s/k0nozy8nyo
 
