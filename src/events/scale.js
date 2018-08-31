@@ -42,17 +42,11 @@ export default (scaleType, {
   aspectRatio = false
 }, onUpdate) => {
 
-  let point
-
   const ratio = (width * scaleX) / (height * scaleY)
 
-  if (scaleFromCenter) {
-    point = getCenter({x, y, scaleX, scaleY, width, height})
-  } else {
-    point = getPoint(scaleType, {x, y, scaleX, scaleY, width, height, angle});
-  }
+  let point = getPoint(scaleType, {x, y, scaleX, scaleY, width, height, angle, scaleFromCenter});
 
-  const oppositePoint = getOppositePoint(scaleType, {
+  let oppositePoint = getOppositePoint(scaleType, {
     x,
     y,
     scaleX,
@@ -62,7 +56,64 @@ export default (scaleType, {
     angle
   })
 
+  const currentProps = {
+    x,
+    y,
+    scaleX,
+    scaleY,
+  }
+
   return (event) => {
+
+    if(event.altKey && !scaleFromCenter){
+      startX = event.pageX
+      startY = event.pageY
+      scaleFromCenter = true
+      point = getPoint(scaleType, {
+        x:currentProps.x,
+        y:currentProps.y,
+        scaleX:currentProps.scaleX,
+        scaleY:currentProps.scaleY,
+        width, height, angle, scaleFromCenter});
+      oppositePoint = getOppositePoint(scaleType, {
+        x:currentProps.x,
+        y:currentProps.y,
+        scaleX:currentProps.scaleX,
+        scaleY:currentProps.scaleY,
+        width,
+        height,
+        angle
+      })
+    } else if(!event.altKey && scaleFromCenter){
+      scaleFromCenter = false
+      startX = event.pageX
+      startY = event.pageY
+      point = getPoint(scaleType, {
+        x:currentProps.x,
+        y:currentProps.y,
+        scaleX:currentProps.scaleX,
+        scaleY:currentProps.scaleY,
+        width,
+        height,
+        angle,
+        scaleFromCenter
+      });
+      oppositePoint = getOppositePoint(scaleType, {
+        x:currentProps.x,
+        y:currentProps.y,
+        scaleX:currentProps.scaleX,
+        scaleY:currentProps.scaleY,
+        width,
+        height,
+        angle
+      })
+    }
+
+    if(!event.shiftKey && aspectRatio ){
+      aspectRatio = false
+    } else if(event.shiftKey && !aspectRatio ){
+      aspectRatio = true
+    }
 
     const moveDiff = {
       x: event.pageX - startX,
@@ -77,34 +128,34 @@ export default (scaleType, {
     }
 
     const {sin, cos} = getSineCosine(scaleType, angle);
+
     const rotationPoint = {
       x: movePoint.x * cos + movePoint.y * sin,
       y: movePoint.y * cos - movePoint.x * sin
     }
 
-    const props = {
-      scaleX: (rotationPoint.x / width) > scaleLimit ? rotationPoint.x / width : scaleLimit,
-      scaleY: (rotationPoint.y / height) > scaleLimit ? rotationPoint.y / height : scaleLimit,
-    };
+    currentProps.scaleX = (rotationPoint.x / width) > scaleLimit ? rotationPoint.x / width : scaleLimit
+    currentProps.scaleY = (rotationPoint.y / height) > scaleLimit ? rotationPoint.y / height : scaleLimit
+
 
     switch (scaleType) {
     case 'ml':
     case 'mr':
-      props.scaleY = scaleY
+      currentProps.scaleY = scaleY
       if (aspectRatio) {
-        props.scaleY = ((width * props.scaleX) * (1 / ratio)) / height;
+        currentProps.scaleY = ((width * currentProps.scaleX) * (1 / ratio)) / height;
       }
       break;
     case 'tm':
     case 'bm':
-      props.scaleX = scaleX
+      currentProps.scaleX = scaleX
       if (aspectRatio) {
-        props.scaleX = ((height * props.scaleY) * ratio) / width;
+        currentProps.scaleX = ((height * currentProps.scaleY) * ratio) / width;
       }
       break;
     default:
       if (aspectRatio) {
-        props.scaleY = ((width * props.scaleX) * (1 / ratio)) / height;
+        currentProps.scaleY = ((width * currentProps.scaleX) * (1 / ratio)) / height;
       }
     }
 
@@ -114,13 +165,11 @@ export default (scaleType, {
         y,
         width,
         height,
-        scaleX: props.scaleX,
-        scaleY: props.scaleY,
+        scaleX: currentProps.scaleX,
+        scaleY: currentProps.scaleY,
       })
-
-      props.x = x + (point.x - center.x)
-      props.y = y + (point.y - center.y)
-
+      currentProps.x = x + (point.x - center.x)
+      currentProps.y = y + (point.y - center.y)
     } else {
       const freshOppositePoint = getOppositePoint(scaleType, {
         width,
@@ -128,14 +177,14 @@ export default (scaleType, {
         angle,
         x,
         y,
-        scaleX: props.scaleX,
-        scaleY: props.scaleY,
+        scaleX: currentProps.scaleX,
+        scaleY: currentProps.scaleY,
       });
 
-      props.x = x + (oppositePoint.x - freshOppositePoint.x)
-      props.y = y + (oppositePoint.y - freshOppositePoint.y)
+      currentProps.x = x + (oppositePoint.x - freshOppositePoint.x)
+      currentProps.y = y + (oppositePoint.y - freshOppositePoint.y)
     }
 
-    onUpdate(props)
+    onUpdate(currentProps)
   }
 }

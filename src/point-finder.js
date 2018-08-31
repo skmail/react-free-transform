@@ -321,6 +321,7 @@ export const getOppositePoint = (scaleType, props) => {
  * @param {number} props.width the original width of element
  * @param {number} props.height the original height of element
  * @param {number} props.angle the  rotation angle
+ * @param {boolean} props.scaleFromCenter scaling performed from center
  * @param {Object} props.center {{x:number, y:number}}
  *
  * @returns {{x:number, y:number}} point position
@@ -335,6 +336,10 @@ export const getPoint = (scaleType, props) => {
     scaleX: props.scaleX,
     scaleY: props.scaleY,
   })
+
+  if(props.scaleFromCenter){
+    return center;
+  }
 
   props = {
     center,
