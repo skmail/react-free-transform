@@ -1,0 +1,14 @@
+__tests__
+coverage
+examples
+node_modules
+src
+.babelrc
+.eslintrc
+.gitignore
+.npmignore
+.travis.yml
+codecov.yml
+package.json
+package-lock.json
+yarn-error.log
