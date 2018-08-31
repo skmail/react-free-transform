@@ -18,4 +18,6 @@ script:
   - npm run lint
   - npm run test
   - npm run test:cov
-  - cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
+
+after_success:
+  - ./node_modules/codecov/bin/codecov
