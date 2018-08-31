@@ -141,5 +141,6 @@ Transform.propTypes = {
   scaleY: PropTypes.number.isRequired,
   scaleLimit: PropTypes.number.isRequired,
   angle: PropTypes.number.isRequired,
-  onUpdate: PropTypes.func
+  onUpdate: PropTypes.func,
+  children:PropTypes.element
 }

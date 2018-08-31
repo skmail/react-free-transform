@@ -10,9 +10,6 @@ export default ({x, y, scaleX, scaleY, width, height, angle, startX, startY, off
 
     const degree = Math.atan2((event.pageY - offsetY) - center.y, (event.pageX - offsetX) - center.x) * 180 / Math.PI;
 
-    if(isNaN(pressAngle)){
-      throw new Error("s")
-    }
     let ang = angle + degree - pressAngle
 
     if (event.shiftKey) {
@@ -22,6 +19,5 @@ export default ({x, y, scaleX, scaleY, width, height, angle, startX, startY, off
     onUpdate({
       angle: ang
     })
-
   }
 }

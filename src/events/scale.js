@@ -9,21 +9,23 @@ import {
 /**
  * Perform Scaling based on a positioned handle
  *
- * @param scaleType
- * @param startX
- * @param startY
- * @param x
- * @param y
- * @param scaleX
- * @param scaleY
- * @param width
- * @param height
- * @param angle
- * @param scaleLimit
- * @param scaleFromCenter
- * @param aspectRatio
- * @param onUpdate
- * @returns {Function}
+ * @param {string} scaleType scale point position name
+ * @param {Object} payload an object holding element information
+ * @param {number} payload.startX mouse down position on X axis
+ * @param {number} payload.startY mouse down position on Y axis
+ * @param {number} payload.x position of x
+ * @param {number} payload.y position of y
+ * @param {number} payload.scaleX amount of scale for x (width)
+ * @param {number} payload.scaleY amount of scale for y (height)
+ * @param {number} payload.width original width
+ * @param {number} payload.height original height
+ * @param {number} payload.angle the angle of rotation
+ * @param {number} payload.scaleLimit minimum scale limit
+ * @param {boolean} payload.scaleFromCenter is scale from center
+ * @param {boolean} payload.aspectRatio is scale on aspect ration
+ * @param {Function} onUpdate a callback on mouse up
+ *
+ * @returns {Function} a function for mouse move
  */
 export default (scaleType, {
   startX,
@@ -86,24 +88,24 @@ export default (scaleType, {
     };
 
     switch (scaleType) {
-      case 'ml':
-      case 'mr':
-        props.scaleY = scaleY
-        if (aspectRatio) {
-          props.scaleY = ((width * props.scaleX) * (1 / ratio)) / height;
-        }
-        break;
-      case 'tm':
-      case 'bm':
-        props.scaleX = scaleX
-        if (aspectRatio) {
-          props.scaleX = ((height * props.scaleY) * ratio) / width;
-        }
-        break;
-      default:
-        if (aspectRatio) {
-          props.scaleY = ((width * props.scaleX) * (1 / ratio)) / height;
-        }
+    case 'ml':
+    case 'mr':
+      props.scaleY = scaleY
+      if (aspectRatio) {
+        props.scaleY = ((width * props.scaleX) * (1 / ratio)) / height;
+      }
+      break;
+    case 'tm':
+    case 'bm':
+      props.scaleX = scaleX
+      if (aspectRatio) {
+        props.scaleX = ((height * props.scaleY) * ratio) / width;
+      }
+      break;
+    default:
+      if (aspectRatio) {
+        props.scaleY = ((width * props.scaleX) * (1 / ratio)) / height;
+      }
     }
 
     if (scaleFromCenter) {
