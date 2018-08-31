@@ -40,6 +40,97 @@ it('scale tl',() => {
 })
 
 
+it('scale tl from center',() => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit:0.1,
+    scaleFromCenter:true
+  };
+
+  scale('tl',state,(payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.28",
+      scaleY: "1.00",
+      x: "14.14",
+      y: "0.00",
+    })
+  })({
+    pageX:-10,
+    pageY:-10
+  })
+
+})
+
+
+
+it('scale tl from center',() => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit:0.1,
+    scaleFromCenter:false,
+    aspectRatio:true
+  };
+
+  scale('tl',state,(payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.14",
+      scaleY: "1.14",
+      x: "7.07",
+      y: "-2.93",
+    })
+  })({
+    pageX:-10,
+    pageY:-10
+  })
+
+})
+
+
+it('scale tl from center with aspect ratio',() => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit:0.1,
+    scaleFromCenter:true,
+    aspectRatio:true
+  };
+
+  scale('tl',state,(payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.28",
+      scaleY: "1.28",
+      x: "14.14",
+      y: "14.14",
+    })
+  })({
+    pageX:-10,
+    pageY:-10
+  })
+})
+
 it('scale bl',() => {
   const state = {
     startX: 0,
@@ -89,6 +180,34 @@ it('scale ml',() => {
       scaleY: "1.00",
       x: "3.11",
       y: "-7.50",
+    })
+  })({
+    pageX:-15,
+    pageY:-15
+  })
+})
+
+it('scale ml with aspect ratio',() => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit:0.1,
+    aspectRatio:true
+  };
+
+  scale('ml',state,(payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.21",
+      scaleY: "1.21",
+      x: "3.11",
+      y:  "3.11",
     })
   })({
     pageX:-15,
@@ -155,6 +274,37 @@ it('scale tm',() => {
 })
 
 
+it('scale tm with aspect ratio',() => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit:0.1,
+    aspectRatio:true
+  };
+
+  scale('tm',state,(payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.11",
+      scaleY: "1.11",
+      x: "9.05",
+      y: "1.55",
+    })
+  })({
+    pageX:0,
+    pageY:-15
+  })
+})
+
+
+
+
 it('scale bm',() => {
   const state = {
     startX: 0,
@@ -175,6 +325,35 @@ it('scale bm',() => {
       scaleX: "1.00",
       scaleY: "1.11",
       x: "-3.75",
+      y: "9.05",
+    })
+  })({
+    pageX:0,
+    pageY:15
+  })
+})
+
+
+it('scale bm with aspect ratio',() => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit:0.1,
+    aspectRatio:true
+  };
+
+  scale('bm',state,(payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.11",
+      scaleY: "1.11",
+      x: "1.55",
       y: "9.05",
     })
   })({
@@ -239,3 +418,33 @@ it('scale mr',() => {
     pageY:15
   })
 })
+
+
+it('scale mr with aspect ratio',() => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit:0.1,
+    aspectRatio:true
+  };
+
+  scale('mr',state,(payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.21",
+      scaleY: "1.21",
+      x: "18.11",
+      y: "18.11",
+    })
+  })({
+    pageX:15,
+    pageY:15
+  })
+})
+
