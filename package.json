@@ -3,7 +3,7 @@
   "description": "A free transform tool",
   "author": "Solaiman Kmail <psokmail@gmail.com> (https://github.com/skmail)",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
