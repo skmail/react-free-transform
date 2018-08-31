@@ -69,7 +69,68 @@ it('scale tl from center', () => {
   })
 
 })
+// same to release resizing from centers/
+// point position will be reset
+it('scale tl, activate from center while resizing', () => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit: 0.1,
+    scaleFromCenter: false
+  };
 
+  scale('tl', state, (payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.00",
+      scaleY: "1.00",
+      x: "0.00",
+      y: "0.00",
+    })
+  })({
+    pageX: -10,
+    pageY: -10,
+    altKey: true
+  })
+
+})
+
+// reset startX and startY since there are no multiple movements allowed in test
+// element will not resized, but resetting position proofed
+
+it('scale tl with release shift while resizing', () => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit: 0.1,
+    scaleFromCenter: true
+  };
+  scale('tl', state, (payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.00",
+      scaleY: "1.00",
+      x: "0.00",
+      y: "0.00",
+    })
+  })({
+    pageX: -10,
+    pageY: -10,
+    altKey:false
+  })
+})
 
 it('scale tl from with aspect ratio', () => {
   const state = {
@@ -85,6 +146,71 @@ it('scale tl from with aspect ratio', () => {
     scaleLimit: 0.1,
     scaleFromCenter: false,
     aspectRatio: true
+  };
+
+  scale('tl', state, (payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.14",
+      scaleY: "1.14",
+      x: "7.07",
+      y: "-2.93",
+    })
+  })({
+    pageX: -10,
+    pageY: -10,
+    shiftKey: true
+  })
+
+})
+
+
+
+it('scale tl  with disable aspect ratio while resizing', () => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit: 0.1,
+    scaleFromCenter: false,
+    aspectRatio: true
+  };
+
+  scale('tl', state, (payload) => {
+    expect(roundPayload(payload)).toEqual({
+      scaleX: "1.14",
+      scaleY: "1.00",
+      x: "2.07",
+      y: "-5.00",
+    })
+  })({
+    pageX: -10,
+    pageY: -10,
+    shiftKey: false
+  })
+
+})
+
+
+it('scale tl from with enable aspect ratio on resizing', () => {
+  const state = {
+    startX: 0,
+    startY: 0,
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    width: 100,
+    height: 100,
+    angle: 45,
+    scaleLimit: 0.1,
+    scaleFromCenter: false,
+    aspectRatio: false
   };
 
   scale('tl', state, (payload) => {
