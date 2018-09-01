@@ -5,6 +5,8 @@ import ReactJson from "react-json-view";
 
 import "./App.css";
 import "./tr.css";
+import "./tr2.css";
+import "./tr3.css";
 
 class App extends React.Component {
   constructor(props) {
@@ -33,7 +35,7 @@ class App extends React.Component {
           height: 100,
           angle: 45,
           background: "linear-gradient(135deg, #fad961 0%,#f76b1c 100%)",
-          classPrefix: "tr",
+          classPrefix: "tr2",
         },
         {
           id: "el-3",
@@ -45,7 +47,7 @@ class App extends React.Component {
           height: 100,
           angle: 90,
           background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
-          classPrefix: "tr",
+          classPrefix: "tr3",
         }
       ]
     };

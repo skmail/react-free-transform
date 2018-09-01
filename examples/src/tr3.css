@@ -1,0 +1,72 @@
+.tr3-transform__rotator,
+.tr3-transform__scale-point {
+    background: #fff;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
+}
+
+.tr3-transform__rotator:hover,
+.tr3-transform__scale-point:hover{
+    background: #F1F5F8;
+}
+.tr3-transform__rotator:active,
+.tr3-transform__scale-point:active{
+    background: #DAE1E7;
+}
+
+.tr3-transform__rotator {
+    width: 10px;
+    height: 10px;
+    top: -25px;
+    left: calc(50% - 5px);
+    border-radius: 50%;
+}
+
+.tr3-transform__scale-point {
+
+}
+
+.tr3-transform__scale-point--tl {
+    top: -5px;
+    left: -5px;
+}
+
+.tr3-transform__scale-point--ml {
+    top: calc(50% - 5px);
+    left: -5px;
+}
+
+.tr3-transform__scale-point--tr {
+    left: calc(100% - 5px);
+    top: -5px;
+}
+
+.tr3-transform__scale-point--tm {
+    left: calc(50% - 5px);
+    top: -5px;
+}
+
+.tr3-transform__scale-point--mr {
+    left: calc(100% - 5px);
+    top: calc(50% - 5px);
+}
+
+.tr3-transform__scale-point--bl {
+    left: -5px;
+    top: calc(100% - 5px);
+}
+
+.tr3-transform__scale-point--bm {
+    left: calc(50% - 5px);
+    top: calc(100% - 5px);
+}
+
+.tr3-transform__scale-point--br {
+    left: calc(100% - 5px);
+    top: calc(100% - 5px);
+}
