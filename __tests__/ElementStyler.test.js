@@ -75,3 +75,37 @@ it('it return complex matrix styles', () => {
     ))
   })
 })
+
+it('it return  styles when disableScale is true', () => {
+
+  const results = elementStyler({
+    x:0,
+    y:0,
+    angle:0,
+    scaleX:2,
+    scaleY:2,
+    width:100,
+    height:100,
+    disableScale:true
+  })
+
+  expect(results.element).toEqual({
+    width:200,
+    height:200,
+    position:"absolute",
+    transform:toCSS( transform(
+      translate(-100,-100),
+      rotate(0),
+    ))
+  })
+
+  expect(results.controls).toEqual({
+    width:200,
+    height:200,
+    position:"absolute",transform:toCSS( transform(
+      translate(-100,-100),
+      rotate(0),
+      scale(1,1)
+    ))
+  })
+})
