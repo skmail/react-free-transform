@@ -65,44 +65,23 @@ export default (scaleType, {
 
   return (event) => {
 
-    if(event.altKey && !scaleFromCenter){
+    if((event.altKey && !scaleFromCenter) || (!event.altKey && scaleFromCenter)){
+
       startX = event.pageX
       startY = event.pageY
-      scaleFromCenter = true
+
+      scaleFromCenter = event.altKey && !scaleFromCenter
+
       point = getPoint(scaleType, {
-        x:currentProps.x,
-        y:currentProps.y,
-        scaleX:currentProps.scaleX,
-        scaleY:currentProps.scaleY,
-        width, height, angle, scaleFromCenter});
-      oppositePoint = getOppositePoint(scaleType, {
-        x:currentProps.x,
-        y:currentProps.y,
-        scaleX:currentProps.scaleX,
-        scaleY:currentProps.scaleY,
-        width,
-        height,
-        angle
-      })
-    } else if(!event.altKey && scaleFromCenter){
-      scaleFromCenter = false
-      startX = event.pageX
-      startY = event.pageY
-      point = getPoint(scaleType, {
-        x:currentProps.x,
-        y:currentProps.y,
-        scaleX:currentProps.scaleX,
-        scaleY:currentProps.scaleY,
+        ...currentProps,
         width,
         height,
         angle,
         scaleFromCenter
       });
+
       oppositePoint = getOppositePoint(scaleType, {
-        x:currentProps.x,
-        y:currentProps.y,
-        scaleX:currentProps.scaleX,
-        scaleY:currentProps.scaleY,
+        ...currentProps,
         width,
         height,
         angle
