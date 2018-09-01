@@ -14,24 +14,35 @@ const roundTo = (n, digits = 2) => {
   return +(test.toFixed(2));
 }
 
-export default ({x, y, angle, scaleX, scaleY, width, height}) => {
+export default ({x, y, angle, scaleX, scaleY, width, height, disableScale = false}) => {
 
   const changedWidth = width * (1 - scaleX);
   const newWidth = width - changedWidth;
   const changedHeight = height * (1 - scaleY);
   const newHeight = height - changedHeight;
 
-  const mat = transform(
-    translate(roundTo(x + changedWidth / 2), roundTo(y + changedHeight / 2)),
-    rotate(angle * (Math.PI / 180)),
-    scale(scaleX, scaleY)
-  );
+  let transformMatrix;
+
+  if(disableScale === false){
+    transformMatrix = transform(
+      translate(roundTo(x + changedWidth / 2), roundTo(y + changedHeight / 2)),
+      rotate(angle * (Math.PI / 180)),
+      scale(scaleX, scaleY)
+    );
+  }else{
+    transformMatrix = transform(
+      translate(roundTo(x + changedWidth ), roundTo(y + changedHeight )),
+      rotate(angle * (Math.PI / 180)),
+    );
+    width = newWidth;
+    height = newHeight;
+  }
 
   return {
     element: {
       width,
       height,
-      transform: toCSS(mat),
+      transform: toCSS(transformMatrix),
       position: "absolute",
     },
     controls: {

@@ -18,12 +18,12 @@ export default class Transform extends React.Component {
 
   render() {
 
-    const {children, classPrefix, x, y, scaleX, scaleY, width, height, angle} = this.props
+    const {children, classPrefix, x, y, scaleX, scaleY, width, height, angle, disableScale} = this.props
 
     const {
       element: elementStyle,
       controls: controlsStyles
-    } = elementStyler({x, y, scaleX, scaleY, width, height, angle});
+    } = elementStyler({x, y, scaleX, scaleY, width, height, angle, disableScale});
 
     return (
       <div className={`${classPrefix}-transform`} onMouseDown={this.handleTranslation}>
@@ -39,7 +39,7 @@ export default class Transform extends React.Component {
           <ScalePoint position="bl" onMouseDown={(event) => this.handleScale('bl', event)} classPrefix={classPrefix}/>
           <ScalePoint position="bm" onMouseDown={(event) => this.handleScale('bm', event)} classPrefix={classPrefix}/>
           <ScalePoint position="br" onMouseDown={(event) => this.handleScale('br', event)} classPrefix={classPrefix}/>
-          <Rotator onMouseDown={this.handleRotation} classPrefix={classPrefix} />
+          <Rotator onMouseDown={this.handleRotation} classPrefix={classPrefix}/>
         </div>
       </div>
     )
@@ -81,8 +81,8 @@ export default class Transform extends React.Component {
       height: this.props.height,
       angle: this.props.angle,
       scaleLimit: this.props.scaleLimit,
-      scaleFromCenter:event.altKey,
-      aspectRatio:event.shiftKey,
+      scaleFromCenter: event.altKey,
+      aspectRatio: event.shiftKey,
     }, this.props.onUpdate);
 
     const up = () => {
@@ -94,7 +94,7 @@ export default class Transform extends React.Component {
     document.addEventListener("mouseup", up)
   }
 
-  handleRotation(event){
+  handleRotation(event) {
     event.stopPropagation();
 
     const drag = rotate({
@@ -107,8 +107,8 @@ export default class Transform extends React.Component {
       width: this.props.width,
       height: this.props.height,
       angle: this.props.angle,
-      offsetX:0,
-      offsetY:0
+      offsetX: 0,
+      offsetY: 0
     }, this.props.onUpdate);
 
     const up = () => {
@@ -126,6 +126,7 @@ export default class Transform extends React.Component {
 Transform.defaultProps = {
   classPrefix: "tr",
   scaleLimit: 0.1,
+  disableScale: false,
   onUpdate: function () {
 
   }
@@ -142,5 +143,6 @@ Transform.propTypes = {
   scaleLimit: PropTypes.number.isRequired,
   angle: PropTypes.number.isRequired,
   onUpdate: PropTypes.func,
-  children:PropTypes.element
+  children: PropTypes.element,
+  disableScale: PropTypes.bool
 }

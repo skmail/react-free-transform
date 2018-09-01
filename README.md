@@ -33,6 +33,7 @@ import FreeTransform from 'react-free-transform'
     angle={0}
     onUpdate={({x, y, scaleX, scaleY}) => {}}
     classPrefix="tr"
+    disableScale={false}
  >
     <img src="..."/>
  </FreeTransform>

@@ -7,3 +7,6 @@
 .json-view {
     width: 250px;
 }
+*{
+    box-sizing: border-box;
+}

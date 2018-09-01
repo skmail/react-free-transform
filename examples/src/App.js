@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import FreeTransform from "react-free-transform";
 import ReactJson from "react-json-view";
 
@@ -27,25 +26,48 @@ class App extends React.Component {
         },
         {
           id: "el-2",
+          x: 225,
+          y: 225,
+          scaleX: 1,
+          scaleY: 1,
+          width: 100,
+          height: 100,
+          angle: 0,
+          background: "linear-gradient(135deg, #fad961 0%,#f76b1c 100%)",
+          classPrefix: "tr2",
+          text: "Scale Enabled",
+          styles: {
+            padding: 5,
+          },
+        },
+        {
+          id: "el-3",
           x: 100,
           y: 225,
           scaleX: 1,
           scaleY: 1,
           width: 100,
           height: 100,
-          angle: 45,
+          angle: 0,
           background: "linear-gradient(135deg, #fad961 0%,#f76b1c 100%)",
           classPrefix: "tr2",
+          text: "Scale Disabled",
+          styles: {
+            padding: 5,
+            width:"100%",
+            height:"100%"
+          },
+          disableScale: true
         },
         {
-          id: "el-3",
+          id: "el-4",
           x: 100,
           y: 400,
           scaleX: 1,
           scaleY: 1,
           width: 100,
           height: 100,
-          angle: 90,
+          angle: 45,
           background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
           classPrefix: "tr3",
         }
@@ -57,7 +79,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className="workspace">
-          {this.state.elements.map(element => (
+          {this.state.elements.map(({styles = {}, ...element}) => (
             <FreeTransform
               key={element.id}
               onUpdate={payload => this.onUpdate(element.id, payload)}
@@ -68,13 +90,17 @@ class App extends React.Component {
                 style={{
                   width: element.width,
                   height: element.height,
-                  background: element.background
+                  background: element.background,
+                  ...styles
                 }}
-              />
+              >
+                {element.text}
+              </div>
+
             </FreeTransform>
           ))}
         </div>
-        <div class="json-view">
+        <div className="json-view">
           <ReactJson src={this.state.elements}/>
         </div>
       </div>
