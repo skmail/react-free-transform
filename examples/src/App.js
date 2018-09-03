@@ -1,6 +1,6 @@
 import React from "react";
-import FreeTransform from "react-free-transform";
 import ReactJson from "react-json-view";
+import FreeTransform from './Transform'
 
 import "./App.css";
 import "./tr.css";
@@ -71,34 +71,48 @@ class App extends React.Component {
           background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
           classPrefix: "tr3",
         }
-      ]
+      ],
+      offsetX:40,
+      offsetY:20,
+      zoom:1
     };
+
+    this.zoomIn = this.zoomIn.bind(this)
+    this.zoomOut = this.zoomOut.bind(this)
+
+    this.workspaceRef = React.createRef();
   }
 
   render() {
     return (
       <div className="App">
-        <div className="workspace">
-          {this.state.elements.map(({styles = {}, ...element}) => (
-            <FreeTransform
-              key={element.id}
-              onUpdate={payload => this.onUpdate(element.id, payload)}
-              {...element}
-            >
-              <div
-                className="element"
-                style={{
-                  width: element.width,
-                  height: element.height,
-                  background: element.background,
-                  ...styles
-                }}
+        <div className="wrapper">
+          <button onClick={this.zoomIn}>+</button>
+          <button onClick={this.zoomOut}>-</button>
+          <div className="workspace" ref={this.workspaceRef}>
+            {this.state.elements.map(({styles = {}, ...element}) => (
+              <FreeTransform
+                key={element.id}
+                onUpdate={payload => this.onUpdate(element.id, payload)}
+                offsetX={this.state.offsetX}
+                offsetY={this.state.offsetY}
+                {...element}
               >
-                {element.text}
-              </div>
+                <div
+                  className="element"
+                  style={{
+                    width: element.width,
+                    height: element.height,
+                    background: element.background,
+                    ...styles
+                  }}
+                >
+                  {element.text}
+                </div>
 
-            </FreeTransform>
-          ))}
+              </FreeTransform>
+            ))}
+          </div>
         </div>
         <div className="json-view">
           <ReactJson src={this.state.elements}/>
@@ -119,6 +133,38 @@ class App extends React.Component {
         return item;
       })
     });
+  }
+
+  zoomIn(){
+    const zoom = this.state.zoom + 0.5;
+    this.setState({
+      zoom,
+      elements:this.resizeElements(zoom)
+    })
+  }
+
+  zoomOut(){
+    const zoom = this.state.zoom - 0.5;
+    this.setState({
+      zoom,
+      elements:this.resizeElements(zoom)
+    })
+  }
+
+  resizeElements(zoom){
+    return this.state.elements.map(element => ({
+      ...element,
+      scaleX: element.scaleX + zoom ,
+      scaleY: element.scaleY + zoom
+    }))
+  }
+
+
+  componentDidMount(){
+    this.setState({
+      offsetX:this.workspaceRef.current.offsetLeft,
+      offsetY:this.workspaceRef.current.offsetTop
+    })
   }
 }
 

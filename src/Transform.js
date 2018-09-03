@@ -107,8 +107,8 @@ export default class Transform extends React.Component {
       width: this.props.width,
       height: this.props.height,
       angle: this.props.angle,
-      offsetX: 0,
-      offsetY: 0
+      offsetX: this.props.offsetX,
+      offsetY: this.props.offsetY
     }, this.props.onUpdate);
 
     const up = () => {
@@ -127,6 +127,8 @@ Transform.defaultProps = {
   classPrefix: "tr",
   scaleLimit: 0.1,
   disableScale: false,
+  offsetX:0,
+  offsetY:0,
   onUpdate: function () {
 
   }
@@ -144,5 +146,7 @@ Transform.propTypes = {
   angle: PropTypes.number.isRequired,
   onUpdate: PropTypes.func,
   children: PropTypes.element,
-  disableScale: PropTypes.bool
+  disableScale: PropTypes.bool,
+  offsetX: PropTypes.number.isRequired,
+  offsetY: PropTypes.number.isRequired,
 }
