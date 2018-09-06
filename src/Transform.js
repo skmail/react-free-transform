@@ -1,11 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import rotate from './events/rotate'
-import scale from './events/scale'
 import ScalePoint from './ScalePoint'
 import Rotator from './Rotator'
-import translate from './events/translate'
-import elementStyler from './ElementStyler'
+import {scale, rotate, translate, styler} from 'free-transform'
 
 export default class Transform extends React.Component {
 
@@ -23,7 +20,7 @@ export default class Transform extends React.Component {
     const {
       element: elementStyle,
       controls: controlsStyles
-    } = elementStyler({x, y, scaleX, scaleY, width, height, angle, disableScale});
+    } = styler({x, y, scaleX, scaleY, width, height, angle, disableScale});
 
     return (
       <div className={`${classPrefix}-transform`} onMouseDown={this.handleTranslation}>
@@ -127,8 +124,8 @@ Transform.defaultProps = {
   classPrefix: "tr",
   scaleLimit: 0.1,
   disableScale: false,
-  offsetX:0,
-  offsetY:0,
+  offsetX: 0,
+  offsetY: 0,
   onUpdate: function () {
 
   }

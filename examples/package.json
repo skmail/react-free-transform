@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-free-transform": "^1.0.9",
     "react-json-view": "^1.19.1",
     "react-scripts": "1.1.4"
   },
