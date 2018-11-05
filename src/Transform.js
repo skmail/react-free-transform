@@ -4,6 +4,11 @@ import ScalePoint from './ScalePoint'
 import Rotator from './Rotator'
 import {scale, rotate, translate, styler} from 'free-transform'
 
+const ANCHOR_PRESETS = {
+  'corners': ['tl', 'tr', 'bl', 'br'],
+  'sides': ['tm', 'mr', 'bm', 'ml']
+}
+
 export default class Transform extends React.Component {
 
   constructor(props) {
@@ -15,7 +20,22 @@ export default class Transform extends React.Component {
 
   render() {
 
-    const {children, classPrefix, x, y, scaleX, scaleY, width, height, angle, disableScale} = this.props
+    const {children, classPrefix, 
+           x, y, scaleX, scaleY, 
+           width, height, angle, 
+           disableScale,
+           rotateEnabled, scaleEnabled, 
+           translateEnabled, scaleHandles,
+           open, ...props
+    } = this.props
+    
+    // replace anchor shortcuts
+    for(var name in ANCHOR_PRESETS) {
+      var index = scaleHandles.indexOf(name);
+      if (index !== -1) {
+        scaleHandles.splice(index, 1, ...ANCHOR_PRESETS[name]);
+      }
+    }
 
     const {
       element: elementStyle,
@@ -23,21 +43,22 @@ export default class Transform extends React.Component {
     } = styler({x, y, scaleX, scaleY, width, height, angle, disableScale});
 
     return (
-      <div className={`${classPrefix}-transform`} onMouseDown={this.handleTranslation}>
+      <div className={`${classPrefix}-transform`} 
+           onMouseDown={open && translateEnabled ? this.handleTranslation : null}>
+        
         <div className={`${classPrefix}-transform__content`} style={elementStyle}>
           {children}
         </div>
-        <div className={`${classPrefix}-transform__controls`} style={controlsStyles}>
-          <ScalePoint position="tl" onMouseDown={(event) => this.handleScale('tl', event)} classPrefix={classPrefix}/>
-          <ScalePoint position="ml" onMouseDown={(event) => this.handleScale('ml', event)} classPrefix={classPrefix}/>
-          <ScalePoint position="tr" onMouseDown={(event) => this.handleScale('tr', event)} classPrefix={classPrefix}/>
-          <ScalePoint position="tm" onMouseDown={(event) => this.handleScale('tm', event)} classPrefix={classPrefix}/>
-          <ScalePoint position="mr" onMouseDown={(event) => this.handleScale('mr', event)} classPrefix={classPrefix}/>
-          <ScalePoint position="bl" onMouseDown={(event) => this.handleScale('bl', event)} classPrefix={classPrefix}/>
-          <ScalePoint position="bm" onMouseDown={(event) => this.handleScale('bm', event)} classPrefix={classPrefix}/>
-          <ScalePoint position="br" onMouseDown={(event) => this.handleScale('br', event)} classPrefix={classPrefix}/>
-          <Rotator onMouseDown={this.handleRotation} classPrefix={classPrefix}/>
-        </div>
+
+        {open && <div className={`${classPrefix}-transform__controls`} style={controlsStyles}>
+
+          {scaleEnabled && scaleHandles.map(position => 
+              <ScalePoint key={position} position={position} classPrefix={classPrefix}
+                          onMouseDown={(event) => this.handleScale(position, event)} />
+          )}
+
+          {rotateEnabled && <Rotator onMouseDown={this.handleRotation} classPrefix={classPrefix}/>}
+        </div>}
       </div>
     )
   }
@@ -78,8 +99,8 @@ export default class Transform extends React.Component {
       height: this.props.height,
       angle: this.props.angle,
       scaleLimit: this.props.scaleLimit,
-      scaleFromCenter: event.altKey,
-      aspectRatio: event.shiftKey,
+      scaleFromCenter: event.altKey || this.props.scaleFromCenter,
+      aspectRatio: event.shiftKey || this.props.aspectRatio,
     }, this.props.onUpdate);
 
     const up = () => {
@@ -124,11 +145,19 @@ Transform.defaultProps = {
   classPrefix: "tr",
   scaleLimit: 0.1,
   disableScale: false,
+  scaleX: 1,
+  scaleY: 1,
+  angle: 0,
   offsetX: 0,
   offsetY: 0,
-  onUpdate: function () {
-
-  }
+  onUpdate: function () {},
+  rotateEnabled: true,
+  scaleEnabled: true,
+  translateEnabled: true,
+  scaleHandles: ['tl', 'ml', 'tr', 'tm', 'mr', 'bl', 'bm', 'br'],
+  open: true,
+  scaleFromCenter: false, 
+  aspectRatio: false,
 }
 
 Transform.propTypes = {
@@ -146,4 +175,11 @@ Transform.propTypes = {
   disableScale: PropTypes.bool,
   offsetX: PropTypes.number.isRequired,
   offsetY: PropTypes.number.isRequired,
+  rotateEnabled: PropTypes.bool,
+  scaleEnabled: PropTypes.bool,
+  translateEnabled: PropTypes.bool,
+  scaleHandles: PropTypes.array,
+  open: PropTypes.bool,
+  scaleFromCenter: PropTypes.bool,
+  aspectRatio: PropTypes.bool,
 }
