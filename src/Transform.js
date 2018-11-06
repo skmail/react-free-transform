@@ -78,15 +78,17 @@ export default class Transform extends React.Component {
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', up);
       
-      if(this.props.onTranslateEnd)
-        this.props.onTranslateEnd(event);
+      let onEnd = this.props.onTranslateEnd || this.props.onTransformEnd;
+      if(onEnd)
+        onEnd(event);
     };
 
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', up);
 
-    if(this.props.onTranslateStart)
-      this.props.onTranslateStart(event);
+    let onStart = this.props.onTranslateStart || this.props.onTransformStart;
+    if(onStart)
+      onStart(event);
   }
 
   handleScale(scaleType, event) {
@@ -113,15 +115,17 @@ export default class Transform extends React.Component {
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', up);
 
-      if(this.props.onScaleEnd)
-        this.props.onScaleEnd(event);
+      let onEnd = this.props.onScaleEnd || this.props.onTransformEnd;
+      if(onEnd)
+        onEnd(event);
     };
 
     document.addEventListener("mousemove", drag);
     document.addEventListener("mouseup", up);
 
-    if(this.props.onScaleStart)
-      this.props.onScaleStart(event);
+    let onStart = this.props.onScaleStart || this.props.onTransformStart;
+    if(onStart)
+      onStart(event);
   }
 
   handleRotation(event) {
@@ -144,17 +148,18 @@ export default class Transform extends React.Component {
     const up = (event) => {
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', up);
-
-      if(this.props.onRotateEnd)
-        this.props.onRotateEnd(event);
+      
+      let onEnd = this.props.onRotateEnd || this.props.onTransformEnd;
+      if(onEnd)
+        onEnd(event);
     };
 
     document.addEventListener("mousemove", drag);
     document.addEventListener("mouseup", up);
 
-    if(this.props.onRotateStart)
-      this.props.onRotateStart(event);
-
+    let onStart = this.props.onRotateStart || this.props.onTransformStart;
+    if(onStart)
+      onStart(event);
   }
 }
 
