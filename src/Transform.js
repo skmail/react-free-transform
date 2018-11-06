@@ -4,9 +4,10 @@ import ScalePoint from './ScalePoint'
 import Rotator from './Rotator'
 import {scale, rotate, translate, styler} from 'free-transform'
 
-const ANCHOR_PRESETS = {
+const SCALE_HANDLE_PRESETS = {
   'corners': ['tl', 'tr', 'bl', 'br'],
-  'sides': ['tm', 'mr', 'bm', 'ml']
+  'sides': ['tm', 'mr', 'bm', 'ml'],
+  'all': ['tl', 'ml', 'tr', 'tm', 'mr', 'bl', 'bm', 'br'],
 }
 
 export default class Transform extends React.Component {
@@ -33,10 +34,10 @@ export default class Transform extends React.Component {
     } = this.props
     
     // replace anchor shortcuts
-    for(var name in ANCHOR_PRESETS) {
+    for(var name in SCALE_HANDLE_PRESETS) {
       var index = scaleHandles.indexOf(name);
       if (index !== -1) {
-        scaleHandles.splice(index, 1, ...ANCHOR_PRESETS[name]);
+        scaleHandles.splice(index, 1, ...SCALE_HANDLE_PRESETS[name]);
       }
     }
 
@@ -148,7 +149,7 @@ export default class Transform extends React.Component {
     const up = (event) => {
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', up);
-      
+
       let onEnd = this.props.onRotateEnd || this.props.onTransformEnd;
       if(onEnd)
         onEnd(event);
@@ -163,6 +164,7 @@ export default class Transform extends React.Component {
   }
 }
 
+Transform.SCALE_HANDLE_PRESETS = SCALE_HANDLE_PRESETS;
 
 Transform.defaultProps = {
   classPrefix: "tr",
@@ -177,7 +179,7 @@ Transform.defaultProps = {
   rotateEnabled: true,
   scaleEnabled: true,
   translateEnabled: true,
-  scaleHandles: ['tl', 'ml', 'tr', 'tm', 'mr', 'bl', 'bm', 'br'],
+  scaleHandles: SCALE_HANDLE_PRESETS['all'],
   open: true,
   scaleFromCenter: false, 
   aspectRatio: false,
