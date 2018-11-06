@@ -33,7 +33,12 @@ import FreeTransform from 'react-free-transform'
     angle={0}
     onUpdate={({x, y, scaleX, scaleY}) => {}}
     classPrefix="tr"
-    disableScale={false}
+    disableScale={false} // scale the content or just the content area
+    rotateEnabled={true} // add/remove the rotation handle
+    translateEnabled={true} // add/remove dragging
+    scaleEnabled={true} // add/remove scaling handles
+    scaleHandles={['corners', 'sides']} // equivalent to ['tl', 'ml', 'tr', 'tm', 'mr', 'bl', 'bm', 'br']
+    open={true} // enable/disable the transformer easily
  >
     <img src="..."/>
  </FreeTransform>
