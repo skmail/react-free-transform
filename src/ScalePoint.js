@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 const ScalePoint = ({onMouseDown,classPrefix,position}) => (
   <div
     className={`${classPrefix}-transform__scale-point ${classPrefix}-transform__scale-point--${position}`}

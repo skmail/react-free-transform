@@ -20,12 +20,15 @@ export default class Transform extends React.Component {
 
   render() {
 
-    const {children, classPrefix, 
+    const {
+      children, classPrefix, 
       x, y, scaleX, scaleY, 
       width, height, angle, 
       disableScale,
-      rotateEnabled, scaleEnabled, 
-      translateEnabled, scaleHandles,
+      rotateEnabled, 
+      scaleEnabled, 
+      translateEnabled, 
+      scaleHandles,
       open, //...props
     } = this.props
     
@@ -43,7 +46,7 @@ export default class Transform extends React.Component {
     } = styler({x, y, scaleX, scaleY, width, height, angle, disableScale});
 
     return (
-      <div className={`${classPrefix}-transform`} onMouseDown={open && translateEnabled && this.handleTranslation}>
+      <div className={`${classPrefix}-transform`} onMouseDown={open && translateEnabled ? this.handleTranslation : null}>
         
         <div className={`${classPrefix}-transform__content`} style={elementStyle}>
           {children}
@@ -69,15 +72,21 @@ export default class Transform extends React.Component {
       y: this.props.y,
       startX: event.pageX,
       startY: event.pageY
-    }, this.props.onUpdate);
+    }, this.props.onTranslate || this.props.onUpdate);
 
-    const up = () => {
+    const up = (event) => {
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', up);
+      
+      if(this.props.onTranslateEnd)
+        this.props.onTranslateEnd(event);
     };
 
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', up);
+
+    if(this.props.onTranslateStart)
+      this.props.onTranslateStart(event);
   }
 
   handleScale(scaleType, event) {
@@ -87,8 +96,7 @@ export default class Transform extends React.Component {
     event.preventDefault();
 
     const drag = scale(scaleType, {
-      startX: event.pageX,
-      startY: event.pageY,
+      event,
       x: this.props.x,
       y: this.props.y,
       scaleX: this.props.scaleX,
@@ -97,17 +105,23 @@ export default class Transform extends React.Component {
       height: this.props.height,
       angle: this.props.angle,
       scaleLimit: this.props.scaleLimit,
-      scaleFromCenter: event.altKey || this.props.scaleFromCenter,
-      aspectRatio: event.shiftKey || this.props.aspectRatio,
-    }, this.props.onUpdate);
+      scaleFromCenter: this.props.scaleFromCenter,
+      aspectRatio: this.props.aspectRatio,
+    }, this.props.onScale || this.props.onUpdate);
 
-    const up = () => {
+    const up = (event) => {
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', up);
+
+      if(this.props.onScaleEnd)
+        this.props.onScaleEnd(event);
     };
 
-    document.addEventListener("mousemove", drag)
-    document.addEventListener("mouseup", up)
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", up);
+
+    if(this.props.onScaleStart)
+      this.props.onScaleStart(event);
   }
 
   handleRotation(event) {
@@ -125,15 +139,21 @@ export default class Transform extends React.Component {
       angle: this.props.angle,
       offsetX: this.props.offsetX,
       offsetY: this.props.offsetY
-    }, this.props.onUpdate);
+    }, this.props.onRotate || this.props.onUpdate);
 
-    const up = () => {
+    const up = (event) => {
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', up);
+
+      if(this.props.onRotateEnd)
+        this.props.onRotateEnd(event);
     };
 
-    document.addEventListener("mousemove", drag)
-    document.addEventListener("mouseup", up)
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", up);
+
+    if(this.props.onRotateStart)
+      this.props.onRotateStart(event);
 
   }
 }
@@ -168,16 +188,32 @@ Transform.propTypes = {
   scaleY: PropTypes.number.isRequired,
   scaleLimit: PropTypes.number.isRequired,
   angle: PropTypes.number.isRequired,
+
   onUpdate: PropTypes.func,
+  onTranslate: PropTypes.func,
+  onRotate: PropTypes.func,
+  onScale: PropTypes.func,
+
+  onTranslateStart: PropTypes.func,
+  onRotateStart: PropTypes.func,
+  onScaleStart: PropTypes.func,
+
+  onTranslateEnd: PropTypes.func,
+  onRotateEnd: PropTypes.func,
+  onScaleEnd: PropTypes.func,
+
   children: PropTypes.element,
   disableScale: PropTypes.bool,
   offsetX: PropTypes.number.isRequired,
   offsetY: PropTypes.number.isRequired,
+
   rotateEnabled: PropTypes.bool,
   scaleEnabled: PropTypes.bool,
   translateEnabled: PropTypes.bool,
+
   scaleHandles: PropTypes.array,
-  open: PropTypes.bool,
   scaleFromCenter: PropTypes.bool,
-  aspectRatio: PropTypes.bool,
+  aspectRatio: PropTypes.oneOfType([ PropTypes.bool, PropTypes.number ]),
+
+  open: PropTypes.bool,
 }
