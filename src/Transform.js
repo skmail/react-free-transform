@@ -40,7 +40,7 @@ export default class Transform extends React.Component {
         scaleHandles.splice(index, 1, ...SCALE_HANDLE_PRESETS[name]);
       }
     }
-
+    
     const {
       element: elementStyle,
       controls: controlsStyles
@@ -197,6 +197,9 @@ Transform.propTypes = {
   angle: PropTypes.number.isRequired,
 
   onUpdate: PropTypes.func,
+  onTransformStart: PropTypes.func,
+  onTransformEnd: PropTypes.func,
+
   onTranslate: PropTypes.func,
   onRotate: PropTypes.func,
   onScale: PropTypes.func,

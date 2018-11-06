@@ -22,6 +22,37 @@ it('renders without crashing', () => {
   const element = <Transform
     {...testProps}
     onUpdate={({x, y, scaleX, scaleY}) => {}}
+  >
+    <div/>
+  </Transform>;
+
+  ReactDOM.render(element, div);
+  ReactDOM.unmountComponentAtNode(div);
+
+  const wrapper = mount(element)
+
+  wrapper.find('.tr-transform').simulate('mousedown');
+  global.document.dispatchEvent(new Event('mousemove'));
+  global.document.dispatchEvent(new Event('mouseup'));
+
+
+  wrapper.find('.tr-transform__rotator').simulate('mousedown');
+  global.document.dispatchEvent(new Event('mousemove'));
+  global.document.dispatchEvent(new Event('mouseup'));
+
+  Transform.SCALE_HANDLE_PRESETS['all'].forEach((position) => {
+    wrapper.find(`.tr-transform__scale-point--${position}`).simulate('mousedown');
+    global.document.dispatchEvent(new Event('mousemove'));
+    global.document.dispatchEvent(new Event('mouseup'));
+  })
+
+});
+
+it('renders with basic events without crashing', () => {
+  const div = document.createElement('div');
+  const element = <Transform
+    {...testProps}
+    onUpdate={({x, y, scaleX, scaleY}) => {}}
     onTransformStart={(event) => {}}
     onTransformEnd={(event) => {}}
   >
@@ -42,39 +73,11 @@ it('renders without crashing', () => {
   global.document.dispatchEvent(new Event('mousemove'));
   global.document.dispatchEvent(new Event('mouseup'));
 
-
-  wrapper.find('.tr-transform__scale-point--tl').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-
-  wrapper.find('.tr-transform__scale-point--ml').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--tr').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--tm').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--mr').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--bl').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--bm').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--br').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
+  Transform.SCALE_HANDLE_PRESETS['all'].forEach((position) => {
+    wrapper.find(`.tr-transform__scale-point--${position}`).simulate('mousedown');
+    global.document.dispatchEvent(new Event('mousemove'));
+    global.document.dispatchEvent(new Event('mouseup'));
+  })
 
 });
 
@@ -110,38 +113,11 @@ it('renders with all events without crashing', () => {
   global.document.dispatchEvent(new Event('mouseup'));
 
 
-  wrapper.find('.tr-transform__scale-point--tl').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-
-  wrapper.find('.tr-transform__scale-point--ml').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--tr').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--tm').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--mr').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--bl').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--bm').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
-
-  wrapper.find('.tr-transform__scale-point--br').simulate('mousedown');
-  global.document.dispatchEvent(new Event('mousemove'));
-  global.document.dispatchEvent(new Event('mouseup'));
+  Transform.SCALE_HANDLE_PRESETS['all'].forEach((position) => {
+    wrapper.find(`.tr-transform__scale-point--${position}`).simulate('mousedown');
+    global.document.dispatchEvent(new Event('mousemove'));
+    global.document.dispatchEvent(new Event('mouseup'));
+  })
 
 });
 
@@ -162,10 +138,35 @@ it('the number of handles using scaleHandles is correct', () => {
 
   const wrapper = mount(element)
 
-  for(let position in Transform.SCALE_HANDLE_PRESETS['all']) {
+  Transform.SCALE_HANDLE_PRESETS['all'].forEach((position) => {
     let el = wrapper.find(`.tr-transform__scale-point--${position}`)
-    expect(el).to.have.lengthOf(+scaleHandles.includes(position));
-  }
+    expect(el.length).toBe(+scaleHandles.includes(position));
+  })
+
+});
+
+it('can use scaleHandles presets correctly', () => {
+
+  const scaleHandles = ['corners'];
+  const expandedHandles = Transform.SCALE_HANDLE_PRESETS['corners']
+
+  const div = document.createElement('div');
+  const element = <Transform
+    {...testProps}
+    scaleHandles={scaleHandles}
+  >
+    <div/>
+  </Transform>;
+
+  ReactDOM.render(element, div);
+  ReactDOM.unmountComponentAtNode(div);
+
+  const wrapper = mount(element)
+
+  Transform.SCALE_HANDLE_PRESETS['all'].forEach((position) => {
+    let el = wrapper.find(`.tr-transform__scale-point--${position}`)
+    expect(el.length).toBe(+expandedHandles.includes(position));
+  })
 });
 
 it('rotation enable/disable working', () => {
@@ -186,7 +187,7 @@ it('rotation enable/disable working', () => {
     let wrapper = mount(element)
     
     let el = wrapper.find('.tr-transform__rotator')
-    expect(el).to.have.lengthOf(+rotateEnabled);
+    expect(el.length).toBe(+rotateEnabled);
   }
 
 });
@@ -209,7 +210,30 @@ it('scale enable/disable working', () => {
     let wrapper = mount(element)
     
     let el = wrapper.find("[className*='tr-transform__scale-point--']")
-    expect(el).to.have.lengthOf((+scaleEnabled) * Transform.defaultProps.scaleHandles.length);
+    expect(el.length).toBe((+scaleEnabled) * Transform.defaultProps.scaleHandles.length);
   }
+
+});
+
+it("translation enable/disable didn't crash", () => {
+
+  const div = document.createElement('div');
+  const translateEnabled = false;
+
+  let element = <Transform
+    {...testProps}
+    translateEnabled={translateEnabled}
+  >
+    <div/>
+  </Transform>;
+
+  ReactDOM.render(element, div);
+  ReactDOM.unmountComponentAtNode(div);
+
+  let wrapper = mount(element)
+
+  wrapper.find('.tr-transform').simulate('mousedown');
+  global.document.dispatchEvent(new Event('mousemove'));
+  global.document.dispatchEvent(new Event('mouseup'));
 
 });
