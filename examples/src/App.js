@@ -119,7 +119,8 @@ class App extends React.Component {
       ],
       offsetX:40,
       offsetY:20,
-      zoom:1
+      zoom:1,
+      currentId: null,
     };
 
     this.zoomIn = this.zoomIn.bind(this)
@@ -129,16 +130,20 @@ class App extends React.Component {
   }
 
   render() {
+    const { elements, currentIndex } = this.state;
+
     return (
       <div className="App">
         <div className="wrapper">
           <button onClick={this.zoomIn}>+</button>
           <button onClick={this.zoomOut}>-</button>
           <div className="workspace" ref={this.workspaceRef}>
-            {this.state.elements.map(({styles = {}, ...element}) => (
+            {elements.map(({styles = {}, ...element}, i) => (
               <FreeTransform
                 key={element.id}
                 onUpdate={payload => this.onUpdate(element.id, payload)}
+                onTransformStart={() => this.onTransformStart(i)}
+                onTransformEnd={() => this.onTransformEnd()}
                 offsetX={this.state.offsetX}
                 offsetY={this.state.offsetY}
                 {...element}
@@ -161,10 +166,18 @@ class App extends React.Component {
           </div>
         </div>
         <div className="json-view">
-          <ReactJson src={this.state.elements}/>
+          <ReactJson src={currentIndex != null ? elements[currentIndex] : elements}/>
         </div>
       </div>
     );
+  }
+
+  onTransformStart(index) {
+    this.setState({ currentIndex: index })
+  }
+
+  onTransformEnd() {
+    this.setState({ currentIndex: null })
   }
 
   onUpdate(id, payload) {

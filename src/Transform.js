@@ -40,14 +40,15 @@ export default class Transform extends React.Component {
         scaleHandles.splice(index, 1, ...SCALE_HANDLE_PRESETS[name]);
       }
     }
-    
+
     const {
       element: elementStyle,
       controls: controlsStyles
     } = styler({x, y, scaleX, scaleY, width, height, angle, disableScale});
 
     return (
-      <div className={`${classPrefix}-transform`} onMouseDown={open && translateEnabled ? this.handleTranslation : null}>
+      <div className={`${classPrefix}-transform`} 
+           onMouseDown={open && translateEnabled ? this.handleTranslation : null}>
         
         <div className={`${classPrefix}-transform__content`} style={elementStyle}>
           {children}
@@ -56,10 +57,14 @@ export default class Transform extends React.Component {
         {open && <div className={`${classPrefix}-transform__controls`} style={controlsStyles}>
 
           {scaleEnabled && scaleHandles.map(position => 
-            <ScalePoint key={position} position={position} classPrefix={classPrefix} onMouseDown={(event) => this.handleScale(position, event)} />
+            <ScalePoint key={position} 
+                        position={position} 
+                        classPrefix={classPrefix} 
+                        onMouseDown={(event) => this.handleScale(position, event)} />
           )}
 
-          {rotateEnabled && <Rotator onMouseDown={this.handleRotation} classPrefix={classPrefix}/>}
+          {rotateEnabled && <Rotator onMouseDown={this.handleRotation} 
+                                     classPrefix={classPrefix} />}
         </div>}
       </div>
     )
