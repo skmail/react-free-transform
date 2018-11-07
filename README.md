@@ -31,9 +31,29 @@ import FreeTransform from 'react-free-transform'
     scaleX={1}
     scaleY={1}
     angle={0}
-    onUpdate={({x, y, scaleX, scaleY}) => {}}
     classPrefix="tr"
-    disableScale={false}
+    disableScale={false} // scale the content or just the content area
+    rotateEnabled={true} // add/remove the rotation handle
+    translateEnabled={true} // add/remove dragging
+    scaleEnabled={true} // add/remove scaling handles
+    scaleHandles={['corners', 'sides']} // equivalent to ['tl', 'ml', 'tr', 'tm', 'mr', 'bl', 'bm', 'br']
+    open={true} // enable/disable the transformer easily
+    // general events
+    onUpdate={({x, y, scaleX, scaleY}) => {}}
+    onTransformStart={(event) => {}}
+    onTransformEnd={(event) => {}}
+    // fallback to onUpdate
+    onTranslate={({x, y, scaleX, scaleY}) => {}}
+    onRotate={({x, y, scaleX, scaleY}) => {}}
+    onScale={({x, y, scaleX, scaleY}) => {}}
+    // fallback to onTransformStart
+    onTranslateStart={(event) => {}}
+    onRotateStart={(event) => {}}
+    onScaleStart={(event) => {}}
+    // fallback to onTransformEnd
+    onTranslateEnd={(event) => {}}
+    onRotateEnd={(event) => {}}
+    onScaleEnd={(event) => {}}
  >
     <img src="..."/>
  </FreeTransform>
@@ -66,49 +86,6 @@ import FreeTransform from 'react-free-transform'
 .tr-transform__rotator:active,
 .tr-transform__scale-point:active{
     background: #DAE1E7;
-}
-.tr-transform__scale-point {
-
-}
-
-.tr-transform__scale-point--tl {
-    top: -7px;
-    left: -7px;
-}
-
-.tr-transform__scale-point--ml {
-    top: calc(50% - 7px);
-    left: -7px;
-}
-
-.tr-transform__scale-point--tr {
-    left: calc(100% - 7px);
-    top: -7px;
-}
-
-.tr-transform__scale-point--tm {
-    left: calc(50% - 7px);
-    top: -7px;
-}
-
-.tr-transform__scale-point--mr {
-    left: calc(100% - 7px);
-    top: calc(50% - 7px);
-}
-
-.tr-transform__scale-point--bl {
-    left: -7px;
-    top: calc(100% - 7px);
-}
-
-.tr-transform__scale-point--bm {
-    left: calc(50% - 7px);
-    top: calc(100% - 7px);
-}
-
-.tr-transform__scale-point--br {
-    left: calc(100% - 7px);
-    top: calc(100% - 7px);
 }
 ```
 

@@ -16,11 +16,8 @@ class App extends React.Component {
           id: "el-1",
           x: 100,
           y: 50,
-          scaleX: 1,
-          scaleY: 1,
           width: 100,
           height: 100,
-          angle: 0,
           background: "linear-gradient(135deg, #0FF0B3 0%,#036ED9 100%)",
           classPrefix: "tr",
         },
@@ -28,32 +25,22 @@ class App extends React.Component {
           id: "el-2",
           x: 225,
           y: 225,
-          scaleX: 1,
-          scaleY: 1,
           width: 100,
           height: 100,
-          angle: 0,
           background: "linear-gradient(135deg, #fad961 0%,#f76b1c 100%)",
           classPrefix: "tr2",
-          text: "Scale Enabled",
-          styles: {
-            padding: 5,
-          },
+          text: "Content Scale Enabled",
         },
         {
           id: "el-3",
           x: 100,
           y: 225,
-          scaleX: 1,
-          scaleY: 1,
           width: 100,
           height: 100,
-          angle: 0,
           background: "linear-gradient(135deg, #fad961 0%,#f76b1c 100%)",
           classPrefix: "tr2",
-          text: "Scale Disabled",
+          text: "Content Scale Disabled",
           styles: {
-            padding: 5,
             width:"100%",
             height:"100%"
           },
@@ -61,20 +48,79 @@ class App extends React.Component {
         },
         {
           id: "el-4",
+          x: 350,
+          y: 225,
+          width: 100,
+          height: 100,
+          angle: 30,
+          text: 'angle=30',
+          background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
+          classPrefix: "tr3",
+        },
+        {
+          id: "el-5",
+          x: 225,
+          y: 50,
+          width: 100,
+          height: 100,
+          scaleFromCenter: true,
+          text: 'Scale From Center',
+          background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
+          classPrefix: "tr2",
+        },
+        {
+          id: "el-6",
+          x: 350,
+          y: 50,
+          width: 100,
+          height: 100,
+          aspectRatio: true,
+          text: 'Aspect Ratio',
+          background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
+          classPrefix: "tr2",
+        },
+        {
+          id: "el-7",
           x: 100,
+          y: 400,
+          width: 100,
+          height: 100,
+          rotateEnabled: false,
+          text: 'Rotate Disabled',
+          background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
+          classPrefix: "tr2",
+        },
+        {
+          id: "el-8",
+          x: 225,
           y: 400,
           scaleX: 1,
           scaleY: 1,
           width: 100,
           height: 100,
-          angle: 45,
+          scaleEnabled: false,
+          text: 'Scale Disabled',
           background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
-          classPrefix: "tr3",
+          classPrefix: "tr2",
+        },
+        {
+          id: "el-9",
+          x: 350,
+          y: 400,
+          scaleX: 1,
+          scaleY: 1,
+          width: 100,
+          height: 100,
+          translateEnabled: false,
+          text: 'Translate Disabled',
+          background: "linear-gradient(135deg, #b1ea4d 0%,#459522 100%)",
+          classPrefix: "tr2",
         }
       ],
       offsetX:40,
       offsetY:20,
-      zoom:1
+      zoom:1,
+      currentId: null,
     };
 
     this.zoomIn = this.zoomIn.bind(this)
@@ -84,16 +130,20 @@ class App extends React.Component {
   }
 
   render() {
+    const { elements, currentIndex } = this.state;
+
     return (
       <div className="App">
         <div className="wrapper">
           <button onClick={this.zoomIn}>+</button>
           <button onClick={this.zoomOut}>-</button>
           <div className="workspace" ref={this.workspaceRef}>
-            {this.state.elements.map(({styles = {}, ...element}) => (
+            {elements.map(({styles = {}, ...element}, i) => (
               <FreeTransform
                 key={element.id}
                 onUpdate={payload => this.onUpdate(element.id, payload)}
+                onTransformStart={() => this.onTransformStart(i)}
+                onTransformEnd={() => this.onTransformEnd()}
                 offsetX={this.state.offsetX}
                 offsetY={this.state.offsetY}
                 {...element}
@@ -104,6 +154,7 @@ class App extends React.Component {
                     width: element.width,
                     height: element.height,
                     background: element.background,
+                    padding: 5,
                     ...styles
                   }}
                 >
@@ -115,10 +166,18 @@ class App extends React.Component {
           </div>
         </div>
         <div className="json-view">
-          <ReactJson src={this.state.elements}/>
+          <ReactJson src={currentIndex != null ? elements[currentIndex] : elements}/>
         </div>
       </div>
     );
+  }
+
+  onTransformStart(index) {
+    this.setState({ currentIndex: index })
+  }
+
+  onTransformEnd() {
+    this.setState({ currentIndex: null })
   }
 
   onUpdate(id, payload) {

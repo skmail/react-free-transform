@@ -29,7 +29,7 @@
     "coverage": "codecov"
   },
   "dependencies": {
-    "free-transform": "^0.1.1",
+    "free-transform": "^0.1.3",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
